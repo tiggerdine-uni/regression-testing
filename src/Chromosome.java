@@ -47,7 +47,6 @@ public class Chromosome {
 				for (int k = i - 1; k >= 0; k--) {
 					if (parentTuple2[j] == childTuple[k]) {
 						duplicate = true;
-						// TODO this breaks the for loop doesn't it?
 						break;
 					}
 				}
@@ -62,7 +61,6 @@ public class Chromosome {
 
 	public Chromosome[] crossover(Chromosome chromosome) {
 		int crossoverPoint = random.nextInt(TUPLE_SIZE - 1) + 1;
-		System.out.println("crossoverPoint = " + crossoverPoint);
 		return new Chromosome[] { new Chromosome(chopAndChange(this.tuple, chromosome.tuple, crossoverPoint)),
 				new Chromosome(chopAndChange(chromosome.tuple, this.tuple, crossoverPoint)) };
 	}
@@ -77,8 +75,15 @@ public class Chromosome {
 	}
 
 	public Chromosome mutate(double mutationRate) {
-		// TODO mutate
-		return null;
+		int[] tuple = this.tuple;
+		for (int i = 0; i < TUPLE_SIZE - 1; i++) {
+			if (random.nextDouble() < mutationRate) {
+				int temp = tuple[i];
+				tuple[i] = tuple[i + 1];
+				tuple[i + 1] = temp;
+			}
+		}
+		return new Chromosome(tuple);
 	}
 
 	public void printTuple() {
