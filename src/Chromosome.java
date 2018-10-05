@@ -2,22 +2,21 @@ import java.util.Random;
 
 public class Chromosome {
 
-	private static final FaultMatrix faultMatrix = new FaultMatrix();
 	private static final Random random = new Random();
-	private static final int SUITE_SIZE = FaultMatrix.suiteSize();
-	private static final int TUPLE_SIZE = 6;
-	private double fitness;
-	private int[] tuple;
+	private final int suiteSize = FaultMatrix.suiteSize();
+	private final int tupleSize = 6;
+	private final double fitness;
+	private final int[] tuple;
 
 	public Chromosome() {
-		tuple = new int[TUPLE_SIZE];
-		tuple[0] = random.nextInt(SUITE_SIZE);
-		for (int i = 1; i < TUPLE_SIZE; i++) {
+		tuple = new int[tupleSize];
+		tuple[0] = random.nextInt(suiteSize);
+		for (int i = 1; i < tupleSize; i++) {
 			boolean duplicate;
 			int j;
 			do {
 				duplicate = false;
-				j = random.nextInt(SUITE_SIZE);
+				j = random.nextInt(suiteSize);
 				for (int k = i - 1; k >= 0; k--) {
 					if (j == tuple[k]) {
 						duplicate = true;
@@ -35,12 +34,12 @@ public class Chromosome {
 	}
 
 	private int[] chopAndChange(int[] parentTuple, int[] parentTuple2, int crossoverPoint) {
-		int[] childTuple = new int[TUPLE_SIZE];
+		int[] childTuple = new int[tupleSize];
 		for (int i = 0; i < crossoverPoint; i++) {
 			childTuple[i] = parentTuple[i];
 		}
 		int j = 0;
-		for (int i = crossoverPoint; i < TUPLE_SIZE; i++) {
+		for (int i = crossoverPoint; i < tupleSize; i++) {
 			boolean duplicate;
 			do {
 				duplicate = false;
@@ -60,7 +59,7 @@ public class Chromosome {
 	}
 
 	public Chromosome[] crossover(Chromosome chromosome) {
-		int crossoverPoint = random.nextInt(TUPLE_SIZE - 1) + 1;
+		int crossoverPoint = random.nextInt(tupleSize - 1) + 1;
 		return new Chromosome[] { new Chromosome(chopAndChange(this.tuple, chromosome.tuple, crossoverPoint)),
 				new Chromosome(chopAndChange(chromosome.tuple, this.tuple, crossoverPoint)) };
 	}
@@ -76,7 +75,7 @@ public class Chromosome {
 
 	public Chromosome mutate(double mutationRate) {
 		int[] tuple = this.tuple;
-		for (int i = 0; i < TUPLE_SIZE - 1; i++) {
+		for (int i = 0; i < tupleSize - 1; i++) {
 			if (random.nextDouble() < mutationRate) {
 				int temp = tuple[i];
 				tuple[i] = tuple[i + 1];
@@ -87,7 +86,7 @@ public class Chromosome {
 	}
 
 	public void printTuple() {
-		for (int i = 0; i < TUPLE_SIZE; i++) {
+		for (int i = 0; i < tupleSize; i++) {
 			System.out.print(tuple[i] + " ");
 		}
 		System.out.println();
