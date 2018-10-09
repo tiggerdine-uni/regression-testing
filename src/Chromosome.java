@@ -65,8 +65,32 @@ public class Chromosome {
 	}
 
 	private double fitness() {
-		// TODO fitness
-		return random.nextInt(10) + random.nextDouble();
+		// printTuple();
+		double fitness = 0;
+		boolean[] found = new boolean[FaultMatrix.numberOfFaults()];
+		double counter;
+		for(int i = 0; i < tupleSize; i++) {
+			// System.out.println("test " + tuple[i]);
+			counter = 0;
+			for(int j = 0; j < FaultMatrix.numberOfFaults(); j++) {
+				// System.out.println("fault number " + j);
+				if(!found[j]) {
+					// System.out.println(" not already found");
+				} else {
+				// System.out.println(" already found");
+				}
+				// System.out.println("test finds fault? " + FaultMatrix.FAULT_MATRIX[tuple[i]][j]);
+				if(FaultMatrix.FAULT_MATRIX[tuple[i]][j] == 1 && !found[j]) {
+					found[j] = true;
+					counter++;
+				}
+				// System.out.println("counter = " + counter);
+			}
+			fitness += ((double) counter) / (Math.pow(2, i));
+		}
+		fitness /= FaultMatrix.numberOfFaults();
+		// System.out.println(fitness);
+		return fitness;
 	}
 
 	public double getFitness() {
@@ -75,13 +99,13 @@ public class Chromosome {
 
 	public Chromosome mutate(double mutationRate) {
 		int[] tuple = this.tuple;
-		for (int i = 0; i < tupleSize - 1; i++) {
-			if (random.nextDouble() < mutationRate) {
-				int temp = tuple[i];
-				tuple[i] = tuple[i + 1];
-				tuple[i + 1] = temp;
-			}
-		}
+//		for (int i = 0; i < tupleSize - 1; i++) {
+//			if (random.nextDouble() < mutationRate) {
+//				int temp = tuple[i];
+//				tuple[i] = tuple[i + 1];
+//				tuple[i + 1] = temp;
+//			}
+//		}
 		return new Chromosome(tuple);
 	}
 
@@ -89,7 +113,7 @@ public class Chromosome {
 		for (int i = 0; i < tupleSize; i++) {
 			System.out.print(tuple[i] + " ");
 		}
-		System.out.println();
+		System.out.println("f = " + fitness);
 	}
 
 }

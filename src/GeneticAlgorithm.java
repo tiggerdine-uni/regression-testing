@@ -4,8 +4,8 @@ public class GeneticAlgorithm {
 
 	private static final double CROSSOVER_RATE = 0.75;
 	private static final double MUTATION_RATE = 0.05;
-	private static final int NUMBER_OF_ITERATIONS = 10;
-	private static final int POPULATION_SIZE = 10;
+	private static final int NUMBER_OF_ITERATIONS = 1000;
+	private static final int POPULATION_SIZE = 100;
 	private Chromosome[] population;
 	private Random random;
 
@@ -15,6 +15,12 @@ public class GeneticAlgorithm {
 			population[i] = new Chromosome();
 		}
 		random = new Random();
+	}
+	
+	public void printPopulation() {
+		for(int i = 0; i < POPULATION_SIZE; i++) {
+			System.out.println("fitness of " + i + " = " + population[i].getFitness());
+		}
 	}
 
 	private Chromosome fittestChromosome() {
@@ -35,27 +41,31 @@ public class GeneticAlgorithm {
 				if (random.nextDouble() < CROSSOVER_RATE) {
 					chromosomes = chromosomes[0].crossover(chromosomes[1]);
 				}
-				chromosomes[0].mutate(MUTATION_RATE);
-				chromosomes[1].mutate(MUTATION_RATE);
-				population2[j * 2] = chromosomes[0];
-				population2[j * 2 + 1] = chromosomes[1];
+				population2[j * 2] = chromosomes[0].mutate(MUTATION_RATE);
+				population2[j * 2 + 1] = chromosomes[1].mutate(MUTATION_RATE);
 			}
+			population = population2;
+			System.out.println("generation " + i + " fittest " + fittestChromosome().getFitness());
 		}
 		return fittestChromosome();
 	}
 
-	private Chromosome selectChromosome() {
+	public Chromosome selectChromosome() {
 		double f = 0;
 		for (int i = 0; i < POPULATION_SIZE; i++) {
+			
 			f += population[i].getFitness();
+			// System.out.println("f += " + population[i].getFitness() + " = " + f);
 		}
 		double r = f * random.nextDouble();
+		// System.out.println("r = " + r);
 		int i = 0;
 		while (r > 0) {
 			if (r > population[i].getFitness()) {
 				r -= population[i].getFitness();
 				i++;
 			} else {
+				// System.out.println("RETURNING " + i);
 				return population[i];
 			}
 		}

@@ -6,12 +6,16 @@ import java.io.IOException;
 public class FaultMatrix {
 
 	private static final String NAME = "smallfaultmatrix";
-	private static final int[][] FAULT_MATRIX = faultMatrix();
+	public static final int[][] FAULT_MATRIX = faultMatrix();
 	private static int numberOfColumns;
 	private static int numberOfLines;
 
 	public static int suiteSize() {
 		return numberOfLines;
+	}
+	
+	public static int numberOfFaults() {
+		return numberOfColumns;
 	}
 
 	public static int[][] faultMatrix() {
