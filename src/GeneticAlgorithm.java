@@ -3,9 +3,10 @@ import java.util.Random;
 public class GeneticAlgorithm {
 
 	private static final double CROSSOVER_RATE = 0.75;
+	private static final double ELITISM = 0.5;
 	private static final double MUTATION_RATE = 0.05;
 	private static final int NUMBER_OF_ITERATIONS = 1000;
-	private static final int POPULATION_SIZE = 100;
+	private static final int POPULATION_SIZE = 1000;
 	private Chromosome[] population;
 	private Random random;
 
@@ -16,9 +17,10 @@ public class GeneticAlgorithm {
 		}
 		random = new Random();
 	}
-	
+
 	public void printPopulation() {
-		for(int i = 0; i < POPULATION_SIZE; i++) {
+		for (int i = 0; i < POPULATION_SIZE; i++) {
+			population[i].printTuple();
 			System.out.println("fitness of " + i + " = " + population[i].getFitness());
 		}
 	}
@@ -36,13 +38,18 @@ public class GeneticAlgorithm {
 	public Chromosome run() {
 		for (int i = 0; i < NUMBER_OF_ITERATIONS; i++) {
 			Chromosome[] population2 = new Chromosome[POPULATION_SIZE];
-			for (int j = 0; j < POPULATION_SIZE / 2; j++) {
+			int j = (int) (ELITISM * POPULATION_SIZE / 2);
+			for (int k = 0; k < j; k++) {
+				population2[k * 2] = population[k * 2];
+				population2[k * 2 + 1] = population[k * 2 + 1];
+			}
+			for (int k = j; k < POPULATION_SIZE / 2; k++) {
 				Chromosome[] chromosomes = selectChromosomes();
 				if (random.nextDouble() < CROSSOVER_RATE) {
 					chromosomes = chromosomes[0].crossover(chromosomes[1]);
 				}
-				population2[j * 2] = chromosomes[0].mutate(MUTATION_RATE);
-				population2[j * 2 + 1] = chromosomes[1].mutate(MUTATION_RATE);
+				population2[k * 2] = chromosomes[0].mutate(MUTATION_RATE);
+				population2[k * 2 + 1] = chromosomes[1].mutate(MUTATION_RATE);
 			}
 			population = population2;
 			System.out.println("generation " + i + " fittest " + fittestChromosome().getFitness());
@@ -53,9 +60,10 @@ public class GeneticAlgorithm {
 	public Chromosome selectChromosome() {
 		double f = 0;
 		for (int i = 0; i < POPULATION_SIZE; i++) {
-			
+
 			f += population[i].getFitness();
-			// System.out.println("f += " + population[i].getFitness() + " = " + f);
+			// System.out.println("f += " + population[i].getFitness() + " = " +
+			// f);
 		}
 		double r = f * random.nextDouble();
 		// System.out.println("r = " + r);
