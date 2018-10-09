@@ -2,10 +2,10 @@
 public class Main {
 
 	public static void main(String[] args) {
-		GeneticAlgorithm g = new GeneticAlgorithm();
-		Chromosome winner = g.run();
-		winner.printTuple();
-		System.out.println("winner " + winner.getFitness());
+		// GeneticAlgorithm g = new GeneticAlgorithm();
+		// Chromosome winner = g.run();
+		// winner.printTuple();
+		// System.out.println("winner " + winner.getFitness());
 		// g.printPopulation();
 
 		// Chromosome c = new Chromosome();
@@ -28,6 +28,21 @@ public class Main {
 		// double FitnessAfter = cs[0].getFitness() + cs[1].getFitness();
 		// cs[0].printTuple();
 		// cs[1].printTuple();
+
+		/*
+		 * Experiment to determine the maximum fitness.
+		 */
+		Chromosome fittestC;
+		double fittestF = 0;
+		while (true) {
+			Chromosome c = new Chromosome();
+			if (c.getFitness() > fittestF) {
+				fittestC = c;
+				fittestF = c.getFitness();
+				fittestC.printTuple();
+				System.out.println("f = " + fittestF);
+			}
+		}
 
 	}
 
