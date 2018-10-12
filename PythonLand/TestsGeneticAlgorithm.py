@@ -140,32 +140,30 @@ def GeneticAlgorithm():
 
 def HillClimber():
     #uses same functions as genetic algorithm
-    solution = gene(6, options)
+    solution = gene(7, options)
     #predictably terminates, no need for upper bound
     n = 1
     i = 0
-    while i < 150000:
-        newsol = mutate(solution)
+    while i < 1500:
+        newsol = mutate(solution[:])
+        randsol = gene(7, options)
         #keep if its better
         if fitness(newsol) > fitness(solution):
             solution = newsol
             i = 0
+            n += 1
+            print(fitness(solution))
         else:
             i += 1
         
         #and round we go again...
-        n += 1
+       # n += 1
+        #print(n)
         
     return (solution,n)
 
 def trueRandom():
-    target = "Hello, World"
-    sol = randomString()
-    n = 1
-    while sol != target:
-        sol = randomString()
-        n += 1
-    return (sol, n)
+    return max([(t, fitness(t)) for t in [gene(7, options) for i in range(100000)]],key = lambda t : t[1])
 
 avg = lambda x : sum(x)/len(x)
 
@@ -178,3 +176,4 @@ if __name__ == '__main__':
         times.append(time.time()-start)
         print("Done " + str(i) + ": \t" + str(outs[i]))
     #print(times)
+
