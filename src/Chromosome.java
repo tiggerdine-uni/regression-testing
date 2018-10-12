@@ -8,6 +8,7 @@ public class Chromosome {
 	private final double fitness;
 	private final int[] tuple;
 
+	// TODO
 	public Chromosome() {
 		tuple = new int[tupleSize];
 		tuple[0] = random.nextInt(suiteSize);

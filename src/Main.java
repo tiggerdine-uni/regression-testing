@@ -11,6 +11,7 @@ public class Main {
 		// Chromosome c = new Chromosome();
 		// System.out.println(c.getFitness());
 
+		// it works!
 		Chromosome c = new Chromosome(new int[] { 215, 150, 175, 147, 20, 4 });
 		System.out.println(c.getFitness());
 

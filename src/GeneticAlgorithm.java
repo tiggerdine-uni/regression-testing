@@ -10,6 +10,7 @@ public class GeneticAlgorithm {
 	private Chromosome[] population;
 	private Random random;
 
+	// TODO
 	public GeneticAlgorithm() {
 		population = new Chromosome[POPULATION_SIZE];
 		for (int i = 0; i < POPULATION_SIZE; i++) {
