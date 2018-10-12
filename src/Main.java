@@ -11,9 +11,14 @@ public class Main {
 		// Chromosome c = new Chromosome();
 		// System.out.println(c.getFitness());
 
-		// Chromosome c = new Chromosome(new int[] {81, 121, 130, 125, 79,
-		// 139});
-		// System.out.println(c.getFitness());
+		// it works!
+		Chromosome c = new Chromosome(new int[] { 215, 150, 175, 147, 20, 4 });
+		System.out.println(c.getFitness());
+
+		// int[] ints = FaultMatrix.FAULT_MATRIX[150];
+		// for (int i : ints) {
+		// System.out.println(i);
+		// }
 
 		// GeneticAlgorithm g = new GeneticAlgorithm();
 		// Chromosome c = g.selectChromosome();
@@ -32,17 +37,17 @@ public class Main {
 		/*
 		 * Experiment to determine the maximum fitness.
 		 */
-		Chromosome fittestC;
-		double fittestF = 0;
-		while (true) {
-			Chromosome c = new Chromosome();
-			if (c.getFitness() > fittestF) {
-				fittestC = c;
-				fittestF = c.getFitness();
-				fittestC.printTuple();
-				System.out.println("f = " + fittestF);
-			}
-		}
+		// Chromosome fittestC;
+		// double fittestF = 0;
+		// while (true) {
+		// Chromosome c = new Chromosome();
+		// if (c.getFitness() > fittestF) {
+		// fittestC = c;
+		// fittestF = c.getFitness();
+		// fittestC.printTuple();
+		// System.out.println("f = " + fittestF);
+		// }
+		// }
 
 	}
 
