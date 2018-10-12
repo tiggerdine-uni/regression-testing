@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class FaultMatrix {
 
@@ -13,7 +14,7 @@ public class FaultMatrix {
 	public static int suiteSize() {
 		return numberOfLines;
 	}
-	
+
 	public static int numberOfFaults() {
 		return numberOfColumns;
 	}
@@ -27,7 +28,6 @@ public class FaultMatrix {
 			while ((line = br.readLine()) != null) {
 				numberOfLines++;
 			}
-			numberOfColumns = 0;
 			br.close();
 			br = new BufferedReader(new FileReader(NAME + ".txt"));
 			br.mark(128);
@@ -36,11 +36,19 @@ public class FaultMatrix {
 			int[][] faultMatrix = new int[numberOfLines][numberOfColumns];
 			br.reset();
 			while ((line = br.readLine()) != null) {
+				// System.out.println(line);
 				splitLine = line.split(",");
-				for (int j = 1; j < numberOfColumns; j++) {
-					faultMatrix[Integer.parseInt(splitLine[0].substring(1, splitLine[0].length()))][j] = Integer
-							.parseInt(splitLine[j]);
+				int i = Integer.parseInt(splitLine[0].substring(1, splitLine[0].length()));
+				splitLine = Arrays.copyOfRange(line.split(","), 1, numberOfColumns + 1);
+				// for (int i = 0; i < splitLine.length; i++) {
+				// System.out.print(splitLine[i] + " ");
+				// }
+				// System.out.println();
+				for (int j = 0; j < numberOfColumns; j++) {
+					// System.out.print(Integer.parseInt(splitLine[j]));
+					faultMatrix[i][j] = Integer.parseInt(splitLine[j]);
 				}
+				// System.out.println();
 			}
 			return faultMatrix;
 		} catch (FileNotFoundException e) {
@@ -50,7 +58,7 @@ public class FaultMatrix {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(numberOfColumns + " " + numberOfLines);
+		// System.out.println(numberOfColumns + " " + numberOfLines);
 		return null;
 	}
 
