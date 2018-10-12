@@ -3,9 +3,9 @@ import java.util.Random;
 public class GeneticAlgorithm {
 
 	private static final double CROSSOVER_RATE = 0.75;
-	private static final double ELITISM = 0.5;
+	private static final double ELITISM = 0.1;
 	private static final double MUTATION_RATE = 0.05;
-	private static final int NUMBER_OF_ITERATIONS = 1000;
+	private static final int NUMBER_OF_ITERATIONS = 10;
 	private static final int POPULATION_SIZE = 1000;
 	private Chromosome[] population;
 	private Random random;
