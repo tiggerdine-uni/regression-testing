@@ -140,7 +140,7 @@ def GeneticAlgorithm():
 
 def HillClimber():
     #uses same functions as genetic algorithm
-    solution = gene(6, options)
+    solution = gene(7, options)
     #predictably terminates, no need for upper bound
     n = 1
     i = 0
@@ -178,3 +178,4 @@ if __name__ == '__main__':
         times.append(time.time()-start)
         print("Done " + str(i) + ": \t" + str(outs[i]))
     #print(times)
+
