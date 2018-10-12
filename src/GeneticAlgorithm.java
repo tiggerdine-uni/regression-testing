@@ -69,20 +69,15 @@ public class GeneticAlgorithm {
 	private Chromosome select2() {
 		double f = 0;
 		for (int i = 0; i < POPULATION_SIZE; i++) {
-
 			f += population[i].getFitness();
-			// System.out.println("f += " + population[i].getFitness() + " = " +
-			// f);
 		}
 		double r = f * random.nextDouble();
-		// System.out.println("r = " + r);
 		int i = 0;
 		while (r > 0) {
 			if (r > population[i].getFitness()) {
 				r -= population[i].getFitness();
 				i++;
 			} else {
-				// System.out.println("RETURNING " + i);
 				return population[i];
 			}
 		}
