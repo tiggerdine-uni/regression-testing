@@ -10,20 +10,12 @@ public class GeneticAlgorithm {
 	private Chromosome[] population;
 	private Random random;
 
-	// TODO
 	public GeneticAlgorithm() {
 		population = new Chromosome[POPULATION_SIZE];
 		for (int i = 0; i < POPULATION_SIZE; i++) {
 			population[i] = new Chromosome();
 		}
 		random = new Random();
-	}
-
-	public void printPopulation() {
-		for (int i = 0; i < POPULATION_SIZE; i++) {
-			population[i].printTuple();
-			System.out.println("fitness of " + i + " = " + population[i].getFitness());
-		}
 	}
 
 	private Chromosome fittestChromosome() {
@@ -38,6 +30,7 @@ public class GeneticAlgorithm {
 
 	public Chromosome run() {
 		for (int i = 0; i < NUMBER_OF_ITERATIONS; i++) {
+			sort();
 			Chromosome[] population2 = new Chromosome[POPULATION_SIZE];
 			int j = (int) (ELITISM * POPULATION_SIZE / 2);
 			for (int k = 0; k < j; k++) {
@@ -45,7 +38,7 @@ public class GeneticAlgorithm {
 				population2[k * 2 + 1] = population[k * 2 + 1];
 			}
 			for (int k = j; k < POPULATION_SIZE / 2; k++) {
-				Chromosome[] chromosomes = selectChromosomes();
+				Chromosome[] chromosomes = select();
 				if (random.nextDouble() < CROSSOVER_RATE) {
 					chromosomes = chromosomes[0].crossover(chromosomes[1]);
 				}
@@ -53,12 +46,27 @@ public class GeneticAlgorithm {
 				population2[k * 2 + 1] = chromosomes[1].mutate(MUTATION_RATE);
 			}
 			population = population2;
-			System.out.println("generation " + i + " fittest " + fittestChromosome().getFitness());
+			System.out.println(i + " f = " + fittestChromosome().getFitness());
 		}
 		return fittestChromosome();
 	}
 
-	public Chromosome selectChromosome() {
+	private void sort() {
+		boolean changed;
+		do {
+			changed = false;
+			for (int i = 0; i < POPULATION_SIZE - 1; i++) {
+				if (population[i].getFitness() < population[i + 1].getFitness()) {
+					Chromosome temp = population[i];
+					population[i] = population[i + 1];
+					population[i + 1] = temp;
+					changed = true;
+				}
+			}
+		} while (changed);
+	}
+
+	private Chromosome select2() {
 		double f = 0;
 		for (int i = 0; i < POPULATION_SIZE; i++) {
 
@@ -81,13 +89,19 @@ public class GeneticAlgorithm {
 		return population[0];
 	}
 
-	private Chromosome[] selectChromosomes() {
+	private Chromosome[] select() {
 		Chromosome[] chromosomes = new Chromosome[2];
-		chromosomes[0] = selectChromosome();
+		chromosomes[0] = select2();
 		do {
-			chromosomes[1] = selectChromosome();
+			chromosomes[1] = select2();
 		} while (chromosomes[1].equals(chromosomes[0]));
 		return chromosomes;
+	}
+
+	public void print() {
+		for (int i = 0; i < POPULATION_SIZE; i++) {
+			population[i].print();
+		}
 	}
 
 }

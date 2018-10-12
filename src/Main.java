@@ -2,18 +2,16 @@
 public class Main {
 
 	public static void main(String[] args) {
-		// GeneticAlgorithm g = new GeneticAlgorithm();
-		// Chromosome winner = g.run();
-		// winner.printTuple();
-		// System.out.println("winner " + winner.getFitness());
-		// g.printPopulation();
+		GeneticAlgorithm g = new GeneticAlgorithm();
+		Chromosome winner = g.run();
+		System.out.println("winner " + winner.getFitness());
 
 		// Chromosome c = new Chromosome();
 		// System.out.println(c.getFitness());
 
-		// it works!
-		Chromosome c = new Chromosome(new int[] { 215, 150, 175, 147, 20, 4 });
-		System.out.println(c.getFitness());
+		// Chromosome c = new Chromosome(new String[] { "t215", "t150", "t175",
+		// "t147", "t20", "t4" });
+		// System.out.println(c.getFitness());
 
 		// int[] ints = FaultMatrix.FAULT_MATRIX[150];
 		// for (int i : ints) {
@@ -48,7 +46,6 @@ public class Main {
 		// System.out.println("f = " + fittestF);
 		// }
 		// }
-
 	}
 
 }

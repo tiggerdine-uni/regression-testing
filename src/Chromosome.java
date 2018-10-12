@@ -3,23 +3,20 @@ import java.util.Random;
 public class Chromosome {
 
 	private static final Random random = new Random();
-	private final int suiteSize = FaultMatrix.suiteSize();
-	private final int tupleSize = 6;
+	private final int size = 10;
 	private final double fitness;
-	private final int[] tuple;
+	private final String[] tuple;
 
-	// TODO
 	public Chromosome() {
-		tuple = new int[tupleSize];
-		tuple[0] = random.nextInt(suiteSize);
-		for (int i = 1; i < tupleSize; i++) {
+		tuple = new String[size];
+		for (int i = 0; i < size; i++) {
 			boolean duplicate;
-			int j;
+			String j;
 			do {
 				duplicate = false;
-				j = random.nextInt(suiteSize);
+				j = FaultMatrix.TESTS[random.nextInt(FaultMatrix.NUMBER_OF_TESTS)];
 				for (int k = i - 1; k >= 0; k--) {
-					if (j == tuple[k]) {
+					if (j.equals(tuple[k])) {
 						duplicate = true;
 					}
 				}
@@ -29,23 +26,23 @@ public class Chromosome {
 		fitness = fitness();
 	}
 
-	public Chromosome(int[] tuple) {
+	public Chromosome(String[] tuple) {
 		this.tuple = tuple;
 		fitness = fitness();
 	}
 
-	private int[] chopAndChange(int[] parentTuple, int[] parentTuple2, int crossoverPoint) {
-		int[] childTuple = new int[tupleSize];
+	private String[] chopAndChange(String[] parentTuple, String[] parentTuple2, int crossoverPoint) {
+		String[] childTuple = new String[size];
 		for (int i = 0; i < crossoverPoint; i++) {
 			childTuple[i] = parentTuple[i];
 		}
 		int j = 0;
-		for (int i = crossoverPoint; i < tupleSize; i++) {
+		for (int i = crossoverPoint; i < size; i++) {
 			boolean duplicate;
 			do {
 				duplicate = false;
 				for (int k = i - 1; k >= 0; k--) {
-					if (parentTuple2[j] == childTuple[k]) {
+					if (parentTuple2[j].equals(childTuple[k])) {
 						duplicate = true;
 						break;
 					}
@@ -60,40 +57,26 @@ public class Chromosome {
 	}
 
 	public Chromosome[] crossover(Chromosome chromosome) {
-		int crossoverPoint = random.nextInt(tupleSize - 1) + 1;
+		int crossoverPoint = random.nextInt(size - 1) + 1;
 		return new Chromosome[] { new Chromosome(chopAndChange(this.tuple, chromosome.tuple, crossoverPoint)),
 				new Chromosome(chopAndChange(chromosome.tuple, this.tuple, crossoverPoint)) };
 	}
 
 	private double fitness() {
-		printTuple();
+		double count;
 		double fitness = 0;
-		boolean[] found = new boolean[FaultMatrix.numberOfFaults()];
-		double counter;
-		for (int i = 0; i < tupleSize; i++) {
-			System.out.println("test " + tuple[i]);
-			counter = 0;
-			for (int j = 0; j < FaultMatrix.numberOfFaults(); j++) {
-				// System.out.println("fault number " + j);
-				// if (!found[j]) {
-				// System.out.println(" not already found");
-				// } else {
-				// System.out.println(" already found");
-				// }
-				// System.out.println("test finds fault? " +
-				// FaultMatrix.FAULT_MATRIX[tuple[i]][j]);
-				if (FaultMatrix.FAULT_MATRIX[tuple[i]][j] == 1 && !found[j]) {
+		boolean[] found = new boolean[FaultMatrix.NUMBER_OF_FAULTS];
+		for (int i = 0; i < size; i++) {
+			count = 0;
+			for (int j = 0; j < FaultMatrix.NUMBER_OF_FAULTS; j++) {
+				if (FaultMatrix.FAULT_MATRIX.get(tuple[i])[j] == 1 && !found[j]) {
+					count++;
 					found[j] = true;
-					counter++;
 				}
-				// System.out.println("counter = " + counter);
 			}
-			System.out.println(counter);
-			System.out.println("adding " + counter / (i + 1));
-			fitness += counter / (i + 1);
+			fitness += count / (i + 1);
 		}
-		fitness /= (FaultMatrix.numberOfFaults());
-		System.out.println(fitness);
+		fitness /= FaultMatrix.NUMBER_OF_FAULTS;
 		return fitness;
 	}
 
@@ -102,19 +85,19 @@ public class Chromosome {
 	}
 
 	public Chromosome mutate(double mutationRate) {
-		int[] tuple = this.tuple;
-		// for (int i = 0; i < tupleSize - 1; i++) {
-		// if (random.nextDouble() < mutationRate) {
-		// int temp = tuple[i];
-		// tuple[i] = tuple[i + 1];
-		// tuple[i + 1] = temp;
-		// }
-		// }
+		String[] tuple = this.tuple;
+		for (int i = 0; i < size - 1; i++) {
+			if (random.nextDouble() < mutationRate) {
+				String temp = tuple[i];
+				tuple[i] = tuple[i + 1];
+				tuple[i + 1] = temp;
+			}
+		}
 		return new Chromosome(tuple);
 	}
 
-	public void printTuple() {
-		for (int i = 0; i < tupleSize; i++) {
+	public void print() {
+		for (int i = 0; i < size; i++) {
 			System.out.print(tuple[i] + " ");
 		}
 		System.out.println("f = " + fitness);
